@@ -218,12 +218,23 @@
         function stopCards(matrix, winAmount, winLines, multiplier) {
             const reels = document.querySelectorAll(".reel");
             
-            // 🎯 সরাসরি ছবি ফোল্ডার থেকে ওরিজিনাল ইমেজ লোডার গেটওয়ে লক ভাই
-            for (let i = 0; i < 20; i++) {
-                reels[i].classList.remove("scrolling", "turbo-mode");
-                const symbolImg = matrix[i];
-                reels[i].innerHTML = `<img src="./${symbolImg}.png" alt="${symbolImg}">`;
+                        // 🎯 [মেগা ডাইনামিক তাসের কার্ড লোডার ইঞ্জিন ভাই]: এটি ব্যাকএন্ডের প্রতি স্পিনের তাজা র‍্যান্ডম কার্ড ১ মিলি-সেকেন্ডে ২০টি ঘরে অটো-ফিট করবে!
+            const reels = document.querySelectorAll(".reel");
+            if (matrix && matrix.length >= 20) {
+                for (let i = 0; i < 20; i++) {
+                    if (reels[i]) {
+                        reels[i].classList.remove("scrolling", "turbo-mode");
+                        const symbolImg = matrix[i];
+                        reels[i].innerHTML = `<img src="./${symbolImg}.png" alt="${symbolImg}">`;
+                    }
+                }
+            } else {
+                // ব্যাকআপ ট্র্যাকিং লুপ যদি কোনো কারণে ডাটা মিসম্যাচ হয়
+                for (let i = 0; i < 20; i++) {
+                    if (reels[i]) reels[i].classList.remove("scrolling", "turbo-mode");
+                }
             }
+
 
             if (winAmount > 0) {
                 // 🎵 [মেগা উইন সাউন্ড ইঞ্জিন ভাই]: বাজি জিতলে লাভ অনুযায়ী ৪টি সাউন্ডেরই বাকি ২টি এখানে বাজবে!
