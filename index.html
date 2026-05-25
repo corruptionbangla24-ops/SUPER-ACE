@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BETLOVER24 - SUPER ACE SLOT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 🎰 ক্যাসিনো হেডার প্যানেল -->
+    <div class="header">
+        <div class="brand">
+            <div class="name">JILI SUPER ACE</div>
+            <div class="game">PRO SLOT ENGINE</div>
+        </div>
+        <div class="balance-box">৳ <span id="user-balance">0.00</span></div>
+    </div>
+
+    <!-- 📈 মাল্টিপ্লায়ার ফ্ল্যাশার বার -->
+    <div class="multiplier-bar">
+        <span class="m-factor active" id="m1">x1</span>
+        <span class="m-factor" id="m2">x2</span>
+        <span class="m-factor" id="m3">x3</span>
+        <span class="m-factor" id="m5">x5</span>
+    </div>
+
+    <!-- 🎮 ৫x৪ রাজকীয় কার্ড গ্রিড মেম্বার board -->
+    <div class="slot-machine" id="machine-board">
+        <!-- ২০টি কার্ড ঘর ডায়নামিক জাভাস্ক্রিপ্ট দিয়ে পূর্ণ হবে ভাই -->
+    </div>
+
+    <!-- 🏆 মেগা উইন পপআপ ওভারলে -->
+    <div id="win-overlay">🏆 MEGA WIN!! <br><span id="win-display">৳ 0</span></div>
+
+    <!-- 🎛️ কন্ট্রোল প্যানেল এরিয়া -->
+    <div class="footer-controls">
+        <div class="quick-bets">
+            <button class="q-btn active-bet" onclick="setQuickBet(10)">৳১০</button>
+            <button class="q-btn" onclick="setQuickBet(50)">৳৫০</button>
+            <button class="q-btn" onclick="setQuickBet(100)">৳১০০</button>
+            <button class="q-btn" onclick="setQuickBet(500)">৳৫০০</button>
+        </div>
+
+        <div class="play-section">
+            <div class="bet-selector">
+                <button class="bet-btn-nav" onclick="adjustBet('minus')">−</button>
+                <div style="text-align: center;">
+                    <div style="font-size: 10px; color: #aaa;">BET</div>
+                    <div style="font-size: 16px; font-weight: bold;" id="bet-display">৳১০</div>
+                </div>
+                <button class="bet-btn-nav" onclick="adjustBet('plus')">+</button>
+            </div>
+
+            <button class="play-btn" id="spin-btn" onclick="handleSpin()">SPIN</button>
+
+            <div class="icon-group">
+                <button class="icon-btn" id="turbo-btn" onclick="toggleTurbo()">⚡</button>
+                <button class="icon-btn" id="auto-btn" onclick="toggleAuto()">🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔌 [উইনগো কালার ট্রেড সিঙ্ক - ইউনিভার্সাল সকেট ইঞ্জিন লাইব্রেরি ভাই] -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // 🎰 [উইনগো কালার ট্রেড ১৯২-১৯৪ নম্বর লাইনের হুবহু ওরিজিনাল ইউজার ট্র্যাকিং]
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUserId = urlParams.get('userId') || urlParams.get('id') || urlParams.get('username') || "guest_user";
+        const urlWallet = urlParams.get('wallet') || "main";
+        
+        const SERVER_URL = window.location.origin;
+
+        let balance = 0.00;
+        let currentBet = 10;
+        let isSpinning = false;
+        let isTurbo = false;
+        let isAuto = false;
+        let autoInterval = null;
+
+        // 🎵 [লাকি ৭৭৭ ও কালার ট্রেড সিঙ্ক অডিও মাস্টার ইঞ্জিন ভাই]
+        const slotSounds = {
+            click: new Audio('click.mp3'),
+            spin: new Audio('spin.mp3'),
+            win: new Audio('win.mp3'),
+            bigwin: new Audio('bigwin.mp3')
+        };
+
+        Object.values(slotSounds).forEach(sound => { sound.load(); });
+
+        // ৫টি কলাম ৪টি রো = ২০টি কার্ড ঘর লোডার ইনিশিয়াল (সেভেনের জ্যাম কেটে এখানে টেক্কা লক ভাই)
+        const board = document.getElementById("machine-board");
+        for (let i = 0; i < 20; i++) {
+            const reel = document.createElement("div");
+            reel.className = "reel";
+            reel.id = `card-${i}`;
+            reel.innerHTML = `<img src="./ace.png" alt="ace">`; 
+            board.appendChild(reel);
+        }
+
+        // 🎯 [উইনগো কালার ট্রেড ১৫৮ নম্বর লাইনের হুবহু ওরিজিনাল লাইভ সকেট লিসেনার]
+        if (typeof io !== 'undefined') {
+            const socket = io();
+            socket.on("balanceUpdate", (data) => {
+                if (data && data.username === urlUserId) {
+                    if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
+                    fetchLiveBalance();
+                }
+            });
+        }
+
+        async function fetchLiveBalance() {
+            try {
+                const response = await fetch(`${SERVER_URL}/api/ace-balance?userId=${urlUserId}&wallet=${urlWallet}`);
+                const data = await response.json();
+                if (data && data.success) {
+                    balance = parseFloat(data.balance);
+                    document.getElementById("user-balance").innerText = balance.toFixed(2);
+                }
+            } catch (e) {
+                console.error("Balance error:", e);
+            }
+        }
+
+        window.onload = () => {
+            if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
+            fetchLiveBalance();
+        };
+
+        function setQuickBet(val) {
+            if (isSpinning) return;
+            currentBet = val;
+            document.getElementById("bet-display").innerText = `৳${currentBet}`;
+            const btns = document.querySelectorAll(".q-btn");
+            btns.forEach(b => b.classList.remove("active-bet"));
+            event.target.classList.add("active-bet");
+        }
+
+        function adjustBet(action) {
+            if (isSpinning) return;
+            if (action === 'minus' && currentBet > 10) currentBet -= 10;
+            if (action === 'plus' && currentBet < 20000) currentBet += 10;
+            document.getElementById("bet-display").innerText = `৳${currentBet}`;
+        }
+
+        function toggleTurbo() {
+            isTurbo = !isTurbo;
+            document.getElementById("turbo-btn").classList.toggle("active", isTurbo);
+        }
+
+        function toggleAuto() {
+            isAuto = !isAuto;
+            document.getElementById("auto-btn").classList.toggle("active", isAuto);
+            if (isAuto && !isSpinning) handleSpin();
+        }
+
+        // 🛫 [স্লট স্পিন কোর ইঞ্জিন ফাঞ্চন - হুবহু কালার ট্রেড ৩১১ লাইনের জিরো-এরর রেসপন্স সিঙ্ক ভাই]
+        async function handleSpin() {
+            if (isSpinning) return;
+            
+            try {
+                slotSounds.click.play();
+                slotSounds.spin.play();
+            } catch(e) { console.log("Autoplay check"); }
+
+            document.getElementById("win-overlay").style.display = "none";
+            resetMultipliers();
+
+            const reels = document.querySelectorAll(".reel");
+            reels.forEach(r => {
+                r.classList.remove("win-highlight", "dim-effect");
+                r.classList.add(isTurbo ? "turbo-mode" : "scrolling");
+            });
+
+            isSpinning = true;
+            document.getElementById("spin-btn").disabled = true;
+
+            try {
+                const response = await fetch(`${SERVER_URL}/api/ace-spin`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: urlUserId,
+                        amount: parseFloat(currentBet),
+                        wallet: urlWallet
+                    })
+                });
+
+                const data = await response.json();
+
+                // 🎰 [উইনগো কালার ট্রেড ৩১১-৩১২ নম্বর লাইনের বিশুদ্ধ সাকসেস ট্র্যাকিং লক ভাই]
+                if (data && data.success === true) {
+                    balance = parseFloat(data.balance);
+                    document.getElementById("user-balance").innerText = balance.toFixed(2);
+                    
+                    if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
+                    if (window.top) window.top.postMessage({ action: "refresh_wallet" }, "*");
+
+                    setTimeout(() => {
+                        stopCards(data.matrix, data.winAmount, data.winLines, data.multiplier);
+                    }, isTurbo ? 300 : 1000);
+
+                } else {
+                    // 🚨 ইনসাফিসিয়েন্ট বা এরর আসলে চাকা ১ মিলি-সেকেন্ডে থমকে যাবে ভাই!
+                    reels.forEach(r => r.classList.remove("scrolling", "turbo-mode"));
+                    balance = data.balance !== undefined ? parseFloat(data.balance) : 0;
+                    document.getElementById("user-balance").innerText = balance.toFixed(2);
+                    
+                    alert(data.message || "❌ Insufficient Balance! Please Recharge.");
+                    stopSpinState();
+                }
+            } catch (err) {
+                reels.forEach(r => r.classList.remove("scrolling", "turbo-mode"));
+                alert("⚠️ কানেকশন এরর! আবার চেষ্টা করুন।");
+                stopSpinState();
+            }
+        }
+        function stopCards(matrix, winAmount, winLines, multiplier) {
+            const reels = document.querySelectorAll(".reel");
+            
+            // 🎯 সরাসরি ছবি ফোল্ডার থেকে ওরিজিনাল ইমেজ লোডার গেটওয়ে লক ভাই
+            for (let i = 0; i < 20; i++) {
+                reels[i].classList.remove("scrolling", "turbo-mode");
+                const symbolImg = matrix[i];
+                reels[i].innerHTML = `<img src="./${symbolImg}.png" alt="${symbolImg}">`;
+            }
+
+            if (winAmount > 0) {
+                // 🎵 [মেগা উইন সাউন্ড ইঞ্জিন ভাই]: বাজি জিতলে লাভ অনুযায়ী ৪টি সাউন্ডেরই বাকি ২টি এখানে বাজবে!
+                try {
+                    if (winAmount >= (currentBet * 5)) {
+                        slotSounds.bigwin.play(); // ৫ গুণের বেশি জিতলে বিগউইন বাজবে ভাই!
+                    } else {
+                        slotSounds.win.play(); // সাধারণ কম্বো মিললে নরমাল উইন বাজবে ভাই!
+                    }
+                } catch(e) { 
+                    console.log("Audio play blocked by browser"); 
+                }
+
+                document.getElementById("win-display").innerText = `৳${winAmount}`;
+                document.getElementById("win-overlay").style.display = "block";
+                
+                reels.forEach(r => r.classList.add("dim-effect"));
+                winLines.forEach(index => {
+                    if(reels[index]) {
+                        reels[index].classList.remove("dim-effect");
+                        reels[index].classList.add("win-highlight");
+                    }
+                });
+            }
+
+            document.getElementById("user-balance").innerText = balance.toFixed(2);
+            stopSpinState();
+
+            // অটো স্পিন মোড সচল ট্র্যাকিং লক ভাই
+            if (isAuto) {
+                autoInterval = setTimeout(() => {
+                    if (isAuto) handleSpin();
+                }, 1400);
+            }
+        }
+
+        function resetMultipliers() {
+            document.querySelectorAll(".m-factor").forEach(m => m.classList.remove("active"));
+            document.getElementById("m1").classList.add("active");
+        }
+
+        function stopSpinState() {
+            isSpinning = false;
+            document.getElementById("spin-btn").disabled = false;
+            if (!isAuto && autoInterval) {
+                clearTimeout(autoInterval);
+            }
+        }
+    </script>
+</body>
+</html>
+
+        
