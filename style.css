@@ -3,20 +3,20 @@
 body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: white; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100vh; height: 100dvh; overflow: hidden; padding-bottom: env(safe-area-inset-bottom); }
 
 /* হেডার প্যানেল */
-.header { width: 100%; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; background: #111625; border-bottom: 2px solid #00e6ff; box-sizing: border-box; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.6); flex-shrink: 0; }
+.header { width: 100%; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; background: #111625; border-bottom: 2px solid #00e6ff; box-sizing: border-box; z-index: 100; box-shadow: 0 4px 15 rgba(0,0,0,0.6); flex-shrink: 0; }
 .brand .name { color: #f1c40f; font-weight: 900; font-size: 18px; letter-spacing: 1px; }
 .brand .game { color: #00e6ff; font-weight: bold; font-size: 11px; }
 .balance-box { background: linear-gradient(145deg, #10ac84, #1dd1a1); padding: 5px 14px; border-radius: 30px; font-weight: bold; font-size: 15px; border: 1px solid #ffffff33; }
 
 /* মাল্টিপ্লায়ার ট্রিগার বার */
-.multiplier-bar { display: flex; gap: 8px; margin-top: 10px; width: 90%; max-width: 380px; justify-content: space-around; flex-shrink: 0; }
-.m-factor { flex: 1; text-align: center; background: #1a2238; padding: 4px 0; border-radius: 6px; font-weight: 900; color: #556080; font-size: 14px; border: 1px solid #243153; transition: 0.1s; }
+.multiplier-bar { display: flex; gap: 8px; margin-top: 10px; width: 92%; max-width: 380px; justify-content: space-around; flex-shrink: 0; }
+.m-factor { flex: 1; text-align: center; background: #1a2238; padding: 4px 0; border-radius: 6px; font-weight: 900; color: #556080; font-size: 13px; border: 1px solid #243153; transition: 0.1s; }
 .m-factor.active { color: #fff; background: linear-gradient(180deg, #ff9f43, #ee5253); border-color: #ff9f43; box-shadow: 0 0 10px #ff9f43; transform: scale(1.05); }
 
-/* ৫x৪ স্লট মেশিন কার্ড গ্রিড (মোবাইলের জন্য ১০০% অটো-ফিট ইঞ্জিন ভাই) */
-.slot-machine { margin: auto 0; display: grid; grid-template-columns: repeat(5, 66px); grid-template-rows: repeat(4, 66px); gap: 6px; background: #141b2d; padding: 10px; border: 3px solid #00e6ff; border-radius: 14px; box-shadow: 0 0 25px rgba(0,230,255,0.15); }
-.reel { width: 66px; height: 66px; background: #1c263f; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; border: 1px solid #2d3d65; position: relative; }
-.reel img { width: 88%; height: 88%; object-fit: contain; position: absolute; }
+/* 🎯 [মেগা কন্টেইনার চওড়া বুস্টার লক ভাই]: বক্সের ঘর ৬৬px থেকে কমিয়ে ৫৬px এবং গ্যাপ ৪px করায় গেম কনটেইনার স্ক্রিনের ভেতরে ১০০% অটো-ফিট হয়ে যাবে, দুই দিকে বিন্দুমাত্র সরবে না ভাই! */
+.slot-machine { margin: auto 0; display: grid; grid-template-columns: repeat(5, 56px); grid-template-rows: repeat(4, 56px); gap: 5px; background: #141b2d; padding: 8px; border: 3px solid #00e6ff; border-radius: 12px; box-shadow: 0 0 25px rgba(0,230,255,0.15); max-width: 96%; }
+.reel { width: 56px; height: 56px; background: #1c263f; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 6px; border: 1px solid #2d3d65; position: relative; }
+.reel img { width: 85%; height: 85%; object-fit: contain; position: absolute; }
 
 /* কার্ড অ্যানিমেশন মোশন লুপ */
 .scrolling img { animation: cardScroll 0.12s infinite linear; }
@@ -31,7 +31,7 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: w
 #win-overlay { display: none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,15,25,0.96); color: #f1c40f; padding: 18px 35px; border-radius: 40px; font-size: 26px; font-weight: 900; border: 3px solid #f1c40f; z-index: 999; text-align: center; box-shadow: 0 0 30px #f1c40f; animation: popIn 0.25s ease-out; }
 @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
 
-/* কন্ট্রোল প্যানেল এরিয়া */
+/* 🎛️ কন্ট্রোল প্যানেল এরিয়া (ভিউ ফিট লক) */
 .footer-controls { position: relative; bottom: 0; margin-bottom: 6px; width: 94%; max-width: 390px; background: #111625; padding: 10px; border-radius: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid #222d4a; box-shadow: 0 -5px 25px rgba(0,0,0,0.7); pointer-events: auto; flex-shrink: 0; }
 
 .quick-bets { display: flex; gap: 6px; justify-content: center; width: 100%; }
@@ -49,3 +49,6 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: w
 .icon-group { display: flex; gap: 8px; }
 .icon-btn { background: #1c263f; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 15px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; }
 .icon-btn.active { background: #7f1d1d; color: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
+
+/* 🎯 অতিরিক্ত ব্যালেন্স বক্স হাইডার */
+.balance-box { display: none !important; }
