@@ -81,24 +81,33 @@ app.post('/api/ace-spin', async (req, res) => {
         let winLines = [];
         let multiplier = 1;
 
-        // ৫ কলামের পাশাপাশি ঘর ম্যাচিং মেগা ম্যাথমেটিক্স লুপ ভাই
+                // 🎯 [৫ কলাম ৪ রিল ডায়নামিক ম্যাট্রিক্স ম্যাচার লক ভাই]: এটি প্রতি স্পিনে ২০টি ঘরের প্রতিটা রো আলাদা করে ইন্ডিপেন্ডেন্টলি রিড করবে!
         const comboRows = [
-           [0, 1, 2, 3, 4],     // Row 1
-           [5, 6, 7, 8, 9],     // Row 2
-           [10, 11, 12, 13, 14], // Row 3
-           [15, 16, 17, 18, 19]  // Row 4
+            [0, 1, 2, 3, 4],     // Row 1 (কলাম ০ থেকে ৪)
+            [5, 6, 7, 8, 9],     // Row 2 (কলাম ৫ থেকে ৯)
+            [10, 11, 12, 13, 14], // Row 3 (কলাম ১০ থেকে ১৪)
+            [15, 16, 17, 18, 19]  // Row 4 (কলাম ১৫ থেকে ১৯)
         ];
 
         comboRows.forEach(line => {
+            // ৫ কলামের ভেতর যেকোনো ৩টি পাশাপাশি ঘর মিললেই কড়া উইন গেটওয়ে কাউন্ট হবে ভাই
             if (matrix[line[0]] === matrix[line[1]] && matrix[line[1]] === matrix[line[2]]) {
                 winLines.push(line[0], line[1], line[2]);
-                multiplier += 1.50;
+                multiplier += 1.50; // সাড়ে ১ গুণ লাভ ভাই
+                
+                // যদি ৪ নম্বর ঘরও মিলে যায়
                 if (matrix[line[2]] === matrix[line[3]]) {
                     winLines.push(line[3]);
                     multiplier += 1.50;
                 }
+                // যদি ৫ নম্বর চূড়ান্ত ঘরও মিলে মেগা কম্বো হিট করে ভাই!
+                if (matrix[line[3]] === matrix[line[4]]) {
+                    winLines.push(line[4]);
+                    multiplier += 2.00;
+                }
             }
         });
+
 
         // 🎯 [মেগা গোল্ডেন এবং স্ক্যাটার বুস্টার লক]: gold-ace, জোকার বা scatter পড়লে মাল্টিপ্লায়ার ধামাকা বুস্ট x৫ ভাই!
         if (matrix.includes('gold-ace') || matrix.includes('joker') || matrix.includes('scatter')) {
