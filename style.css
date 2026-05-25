@@ -97,7 +97,7 @@ body {
     margin-bottom: auto; 
     display: grid; 
     grid-template-columns: repeat(5, 56px); 
-    grid-template-rows: repeat(4, 56px); 
+    grid-template-rows: repeat(4, 76px); 
     gap: 5px; 
     background: #141b2d; 
     padding: 8px; 
@@ -109,7 +109,7 @@ body {
 
 .reel { 
     width: 56px; 
-    height: 56px; 
+    height: 76px; 
     background: #1c263f; 
     display: flex; 
     align-items: center; 
@@ -119,6 +119,11 @@ body {
     border: 1px solid #2d3d65; 
     position: relative; 
 }
+
+/* 🎯 [ইমেজ এডজাস্টার লুপ]: ২০টি ঘরের প্রতিটা কার্ড ছবি বর্ডারের ভেতরে সুন্দর ফিট করার চাবি ভাই */
+
+
+
 
 /* 🎯 [ইমেজ এডজাস্টার লুপ]: ২০টি ঘরের প্রতিটা কার্ড ছবি বর্ডারের ভেতরে সুন্দর ফিট করার চাবি ভাই */
 .reel img { 
