@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 });
 
 // 🎰 [উইনগো কালার ট্রেড ওরিজিনাল ডোমেইন সিঙ্ক]
-const MAIN_SITE_URL = "https://onrender.com"; 
+const MAIN_SITE_URL = "https://betlover247.onrender.com"; 
 
 // 📥 [১০টি তাজা ছবির মেমোরি লিস্ট লক ভাই]
 const aceCardsList = ['ace', 'gold-ace', 'king', 'gold-king', 'queen', 'jack', 'joker', 'spade-a', 'spade-b', 'scatter'];
