@@ -35,10 +35,10 @@ body { font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: w
 /* গোল্ডেন উইন হাইলাইট ও কার্ড ডিম ইফেক্ট */
 .win-highlight { border: 2px solid #f1c40f !important; box-shadow: 0 0 15px #f1c40f !important; transform: scale(1.04); z-index: 10; background: #2c3e50 !important; }
 .dim-effect { opacity: 0.25; filter: grayscale(1); }
+ #win-overlay { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+@keyframes popIn { 0% { opacity: 0; } 100% { opacity: 0; } }
 
-/* মেগা উইন পপআপ ওভারলে */
-#win-overlay { display: none; position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,15,25,0.96); color: #f1c40f; padding: 18px 35px; border-radius: 40px; font-size: 26px; font-weight: 900; border: 3px solid #f1c40f; z-index: 999; text-align: center; box-shadow: 0 0 30px #f1c40f; animation: popIn 0.25s ease-out; }
-@keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+
 
 /* 🎛️ কন্ট্রোল প্যানেল এরিয়া (ভিউ ফিট লক) */
 .footer-controls { position: relative; bottom: 0; margin-bottom: 6px; width: 94%; max-width: 390px; background: #111625; padding: 10px; border-radius: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid #222d4a; box-shadow: 0 -5px 25px rgba(0,0,0,0.7); pointer-events: auto; flex-shrink: 0; }
